@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد تحلیلی سیر تحول PMBOK | PMPiran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Vazirmatn', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        pmp: {
+                            navy: '#0B192C',
+                            navyLight: '#1E293B',
+                            navySoft: '#334155',
+                            orange: '#FF6500',
+                            orangeLight: '#FF8533',
+                            orangePale: '#FFF4ED',
+                            grayBg: '#F8FAFC',
+                            grayCard: '#F1F5F9'
+                        }
+                    },
+                    boxShadow: {
+                        'corp': '0 10px 30px -5px rgba(11, 25, 44, 0.08), 0 4px 12px -2px rgba(11, 25, 44, 0.04)',
+                        'corp-hover': '0 20px 35px -5px rgba(255, 101, 0, 0.15), 0 8px 16px -4px rgba(11, 25, 44, 0.08)',
+                        'orange-glow': '0 8px 25px -4px rgba(255, 101, 0, 0.45)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
+        body {
+            background-color: #F8FAFC;
+            color: #0B192C;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+        @keyframes fadeInSlideUp {
+            0% { opacity: 0; transform: translateY(24px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseSubtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 101, 0, 0.4); }
+            50% { box-shadow: 0 0 0 14px rgba(255, 101, 0, 0); }
+        }
+
+        .animate-fade-up { animation: fadeInSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-float { animation: floatY 3.5s ease-in-out infinite; }
+        .animate-glow { animation: glowPulse 2s ease-in-out infinite; }
+
+        .card-interactive { transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+        .card-interactive:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 40px -8px rgba(255, 101, 0, 0.18), 0 10px 20px -6px rgba(11, 25, 44, 0.1);
+            border-color: rgba(255, 101, 0, 0.5);
+        }
+
+        .hero-pattern {
+            background: radial-gradient(circle at 15% 20%, rgba(255, 101, 0, 0.18) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+                        linear-gradient(135deg, #0B192C 0%, #152642 60%, #1E293B 100%);
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #F1F5F9; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF6500; }
+
+        .evolution-step { position: relative; }
+        @media (min-width: 1024px) {
+            .evolution-step:not(:last-child)::after {
+                content: '⬅';
+                position: absolute;
+                left: -22px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
+                background: #FF6500;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: bold;
+                z-index: 20;
+                box-shadow: 0 4px 12px rgba(255, 101, 0, 0.4);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-pmp-orange selection:text-white">
+
+    <!-- HEADER -->
+    <header class="hero-pattern text-white relative overflow-hidden border-b-4 border-pmp-orange shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-700/70">
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pmp-orange to-amber-500 flex items-center justify-center shadow-orange-glow text-2xl font-black tracking-tighter">
+                        PMP
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-pmp-orange/20 text-pmp-orange border border-pmp-orange/40">
+                            PMPiran Analytics
+                        </span>
+                        <p class="text-sm text-slate-300 mt-1">مرجع تخصصی مدیریت پروژه و استانداردهای PMI</p>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="relative">
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="🔍 جستجو در شاخص‌ها و مفاهیم..."
+                        oninput="handleSearch(this.value)"
+                        class="w-64 sm:w-80 bg-slate-800/80 text-white placeholder-slate-400 text-base rounded-xl px-4 py-3 border border-slate-600 focus:outline-none focus:border-pmp-orange focus:ring-2 focus:ring-pmp-orange/30 transition"
+                    />
+                    <button
+                        id="clearSearchBtn"
+                        onclick="clearSearch()"
+                        class="hidden absolute left-2.5 top-1/2 -translate-y-1/2 text-xs bg-slate-700 hover:bg-pmp-orange text-white px-2.5 py-1 rounded-md transition">
+                        پاک
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Title -->
+            <div class="text-center max-w-4xl mx-auto mt-9">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-amber-300 text-sm font-medium mb-4">
+                    <span>✨</span>
+                    <span>مقایسه جامع ساختاری، مفهومی و تحلیلی استاندارد مدیریت پروژه</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
+                    داشبورد تحلیلی سیر تحول
+                    <span class="text-transparent bg-clip-text bg-gradient-to-l from-pmp-orange via-amber-400 to-orange-500">PMBOK</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                    مسیر تکامل استاندارد مدیریت پروژه از <strong class="text-white">فرآیندمحوری (نسخه ۶)</strong> به <strong class="text-white">اصول‌محوری (نسخه ۷)</strong> و <strong class="text-pmp-orange">یکپارچگی داده‌محور (نسخه ۸)</strong>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- SEARCH STATUS BANNER -->
+        <div id="searchStatusBanner" class="hidden mb-8 bg-pmp-orangePale border-2 border-pmp-orange/30 rounded-2xl p-5 flex items-center justify-between animate-fade-up">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🔎</span>
+                <div>
+                    <h4 class="font-bold text-pmp-navy text-base sm:text-lg">فیلتر جستجو فعال است</h4>
+                    <p id="searchStatusText" class="text-sm text-slate-600 mt-0.5"></p>
+                </div>
+            </div>
+            <button onclick="clearSearch()" class="bg-pmp-orange hover:bg-orange-600 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition shadow-sm">
+                نمایش همه موارد
+            </button>
+        </div>
+
+        <!-- ============================================================
+             HOME SCREEN (CONTROL PANEL)
+             ============================================================ -->
+        <section id="homeScreen" class="animate-fade-up">
+            <div class="text-center mb-12">
+                <div class="inline-block px-4 py-1 rounded-full bg-pmp-orangePale text-pmp-orange text-sm font-bold mb-4">
+                    🚀 شروع کاوش
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-pmp-navy mb-4">
+                    یک حالت نمایش را انتخاب کنید
+                </h2>
+                <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                    سه زاویه دید متفاوت برای بررسی تحول PMBOK در اختیار شماست. برای شروع، یکی از کارت‌های زیر را انتخاب کنید.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+
+                <!-- CARD 1: VERSION -->
+                <button
+                    onclick="enterPerspective('version')"
+                    class="group relative bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-corp hover:shadow-corp-hover hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 text-right overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-blue-100 to-transparent rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative">
+                        <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-[-6deg] transition-transform duration-300">
+                            📚
+                        </div>
+                        <span class="text-xs font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">وجه اول</span>
+                        <h3 class="text-2xl font-black text-pmp-navy mt-3 mb-2">بر اساس ورژن استاندارد</h3>
+                        <p class="text-base text-slate-600 leading-relaxed mb-5 min-h-[3.5rem]">
+                            بررسی مجزای PMBOK 6، PMBOK 7 و PMBOK 8 به صورت کارت‌های تحلیلی مستقل
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <span class="text-sm font-bold text-slate-500 group-hover:text-blue-700 transition">ورود به این بخش</span>
+                            <span class="text-3xl text-blue-600 group-hover:translate-x-[-8px] transition-transform">⬅</span>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- CARD 2: TOPIC -->
+                <button
+                    onclick="enterPerspective('topic')"
+                    class="group relative bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-corp hover:shadow-corp-hover hover:border-amber-400 hover:-translate-y-2 transition-all duration-300 text-right overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-amber-100 to-transparent rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative">
+                        <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-200 text-amber-700 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-[6deg] transition-transform duration-300">
+                            🔄
+                        </div>
+                        <span class="text-xs font-bold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">وجه دوم</span>
+                        <h3 class="text-2xl font-black text-pmp-navy mt-3 mb-2">بر اساس موضوعات و مفاهیم</h3>
+                        <p class="text-base text-slate-600 leading-relaxed mb-5 min-h-[3.5rem]">
+                            سیر تحول هر شاخص از نسخه ۶ تا ۸ به همراه خلاصه تحلیلی هر موضوع
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <span class="text-sm font-bold text-slate-500 group-hover:text-amber-700 transition">ورود به این بخش</span>
+                            <span class="text-3xl text-amber-600 group-hover:translate-x-[-8px] transition-transform">⬅</span>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- CARD 3: MATRIX -->
+                <button
+                    onclick="enterPerspective('matrix')"
+                    class="group relative bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-corp hover:shadow-corp-hover hover:border-pmp-orange hover:-translate-y-2 transition-all duration-300 text-right overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-orange-100 to-transparent rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative">
+                        <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-100 to-orange-200 text-pmp-orange flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-[-6deg] transition-transform duration-300">
+                            📊
+                        </div>
+                        <span class="text-xs font-bold text-pmp-orange bg-pmp-orangePale px-3 py-1 rounded-full">وجه سوم</span>
+                        <h3 class="text-2xl font-black text-pmp-navy mt-3 mb-2">نمای ماتریس جامع</h3>
+                        <p class="text-base text-slate-600 leading-relaxed mb-5 min-h-[3.5rem]">
+                            جدول یکپارچه تمام شاخص‌ها، رویکردها و خلاصه تحلیلی در یک نگاه
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <span class="text-sm font-bold text-slate-500 group-hover:text-pmp-orange transition">ورود به این بخش</span>
+                            <span class="text-3xl text-pmp-orange group-hover:translate-x-[-8px] transition-transform">⬅</span>
+                        </div>
+                    </div>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             VERSION VIEW
+             ============================================================ -->
+        <section id="viewVersionContainer" class="hidden space-y-8">
+            <div>
+                <button onclick="goHome()" class="group inline-flex items-center gap-2 bg-white hover:bg-pmp-navy text-pmp-navy hover:text-white font-bold px-5 py-3 rounded-xl border-2 border-slate-200 hover:border-pmp-navy transition shadow-sm text-sm sm:text-base">
+                    <span class="text-xl group-hover:translate-x-2 transition-transform">➡</span>
+                    <span>بازگشت به صفحه اصلی</span>
+                </button>
+            </div>
+
+            <!-- Version Tabs -->
+            <div class="bg-white rounded-2xl p-4 shadow-corp border border-slate-200/80 flex flex-col lg:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 text-pmp-navy font-bold text-base">
+                    <span class="text-2xl">🎯</span>
+                    <span>انتخاب نسخه استاندارد جهت مشاهده کارت‌های تحلیلی:</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 w-full lg:w-auto">
+                    <button id="verTab-pmbok6" onclick="selectVersionTab('pmbok6')"
+                        class="ver-tab-btn flex items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-xl font-extrabold text-base sm:text-lg transition-all border">
+                        <span class="text-xl">📘</span><span>PMBOK 6</span>
+                    </button>
+                    <button id="verTab-pmbok7" onclick="selectVersionTab('pmbok7')"
+                        class="ver-tab-btn flex items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-xl font-extrabold text-base sm:text-lg transition-all border">
+                        <span class="text-xl">📙</span><span>PMBOK 7</span>
+                    </button>
+                    <button id="verTab-pmbok8" onclick="selectVersionTab('pmbok8')"
+                        class="ver-tab-btn flex items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-xl font-extrabold text-base sm:text-lg transition-all border">
+                        <span class="text-xl">🚀</span><span>PMBOK 8</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="versionHeroSummary"></div>
+            <div id="versionCardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- ============================================================
+             TOPIC VIEW
+             ============================================================ -->
+        <section id="viewTopicContainer" class="hidden space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <button onclick="goHome()" class="group inline-flex items-center gap-2 bg-white hover:bg-pmp-navy text-pmp-navy hover:text-white font-bold px-5 py-3 rounded-xl border-2 border-slate-200 hover:border-pmp-navy transition shadow-sm text-sm sm:text-base">
+                    <span class="text-xl group-hover:translate-x-2 transition-transform">➡</span>
+                    <span>بازگشت به صفحه اصلی</span>
+                </button>
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+                    <button id="topicLayoutTabsBtn" onclick="setTopicSubLayout('tabs')"
+                        class="px-4 py-2.5 rounded-lg text-sm font-bold transition bg-pmp-navy text-white shadow-sm">
+                        🗂️ نمایش تب‌محور
+                    </button>
+                    <button id="topicLayoutAccordionBtn" onclick="setTopicSubLayout('accordion')"
+                        class="px-4 py-2.5 rounded-lg text-sm font-bold transition text-slate-600 hover:text-pmp-navy">
+                        📑 نمایش آکاردئونی
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-corp border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-xl bg-pmp-orangePale text-pmp-orange flex items-center justify-center text-2xl font-bold">🔄</span>
+                    <div>
+                        <h2 class="font-extrabold text-pmp-navy text-lg sm:text-xl">بررسی سیر تحول بر اساس شاخص‌های مقایسه</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">هر موضوع را انتخاب کنید تا مسیر تکامل آن را از نسخه ۶ تا ۸ به همراه خلاصه تحلیلی ببینید</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Pills -->
+            <div id="topicPillsWrapper" class="bg-white rounded-2xl p-5 shadow-corp border border-slate-200/80">
+                <div class="text-sm font-bold text-slate-500 mb-3 flex items-center justify-between">
+                    <span>📌 شاخص مورد نظر را انتخاب کنید:</span>
+                    <span id="topicCounterBadge" class="text-pmp-orange bg-pmp-orangePale px-3 py-1 rounded-full text-sm"></span>
+                </div>
+                <div id="topicPillsContainer" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div id="activeTopicDetailContainer"></div>
+            <div id="topicAccordionContainer" class="hidden space-y-4"></div>
+        </section>
+
+        <!-- ============================================================
+             MATRIX VIEW
+             ============================================================ -->
+        <section id="viewMatrixContainer" class="hidden space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <button onclick="goHome()" class="group inline-flex items-center gap-2 bg-white hover:bg-pmp-navy text-pmp-navy hover:text-white font-bold px-5 py-3 rounded-xl border-2 border-slate-200 hover:border-pmp-navy transition shadow-sm text-sm sm:text-base">
+                    <span class="text-xl group-hover:translate-x-2 transition-transform">➡</span>
+                    <span>بازگشت به صفحه اصلی</span>
+                </button>
+                <button onclick="exportCSV()" class="flex items-center gap-2 bg-pmp-orange hover:bg-orange-600 text-white font-bold px-5 py-3 rounded-xl shadow-sm transition text-sm sm:text-base">
+                    <span class="text-lg">📤</span>
+                    <span>دانلود خروجی اکسل (CSV)</span>
+                </button>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-corp border border-slate-200/80 flex items-center gap-3">
+                <span class="w-12 h-12 rounded-xl bg-pmp-navy text-pmp-orange flex items-center justify-center text-2xl">📊</span>
+                <div>
+                    <h2 class="font-extrabold text-pmp-navy text-lg sm:text-xl">جدول ماتریس جامع مقایسه‌ای (PMBOK 6 vs 7 vs 8)</h2>
+                    <p class="text-sm text-slate-500">نمای یکپارچه تمام شاخص‌ها، رویکردها و خلاصه تحلیلی سیر تحول در یک نگاه</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-corp border border-slate-200/80 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-pmp-navy text-white text-sm">
+                                <th class="p-4 font-extrabold border-l border-slate-700 w-56 text-base">شاخص / موضوع مقایسه</th>
+                                <th class="p-4 font-extrabold border-l border-slate-700 bg-slate-800/90 min-w-[240px] text-base">📘 PMBOK 6 (۲۰۱۷)</th>
+                                <th class="p-4 font-extrabold border-l border-slate-700 bg-slate-800/50 min-w-[240px] text-base">📙 PMBOK 7 (۲۰۲۱)</th>
+                                <th class="p-4 font-extrabold border-l border-slate-700 bg-pmp-orange/90 min-w-[240px] text-base">🚀 PMBOK 8 (رویکرد نوین)</th>
+                                <th class="p-4 font-extrabold bg-amber-500/20 text-amber-300 min-w-[260px] text-base">💡 خلاصه تحلیلی سیر تحول</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrixTableBody" class="divide-y divide-slate-200 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-pmp-navy text-white border-t-4 border-pmp-orange mt-16 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/90 border border-slate-700 text-pmp-orange text-sm font-bold mb-5 shadow-md">
+                <span>🏆</span>
+                <span>داشبورد تحلیلی سیر تحول PMBOK (نسخه‌های ۶، ۷ و ۸)</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto items-center bg-slate-900/80 p-5 rounded-2xl border border-slate-800 shadow-xl">
+                <a href="https://pmpiran.com" target="_blank" rel="noopener noreferrer"
+                    class="group flex items-center justify-center gap-2.5 bg-slate-800/80 hover:bg-pmp-orange text-white px-5 py-3.5 rounded-xl border border-slate-700 hover:border-pmp-orange transition-all duration-300 shadow-sm">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🌐</span>
+                    <div class="text-right">
+                        <div class="text-[11px] text-slate-400 group-hover:text-orange-100">وب‌سایت رسمی</div>
+                        <div class="font-black text-sm sm:text-base tracking-wide">PMPiran.com</div>
+                    </div>
+                </a>
+
+                <div class="flex items-center justify-center gap-2.5 bg-gradient-to-b from-slate-800 to-slate-900 px-5 py-3.5 rounded-xl border border-pmp-orange/50 shadow-orange-glow">
+                    <span class="text-xl">👨‍💼</span>
+                    <div class="text-center">
+                        <div class="text-[11px] text-pmp-orange font-semibold">تحلیل و طراحی محتوا</div>
+                        <div class="font-extrabold text-sm sm:text-base text-white">تهیه کننده: مهدی معین</div>
+                    </div>
+                </div>
+
+                <a href="https://www.linkedin.com/in/mehdi-moein/" target="_blank" rel="noopener noreferrer"
+                    class="group flex items-center justify-center gap-2.5 bg-slate-800/80 hover:bg-[#0A66C2] text-white px-5 py-3.5 rounded-xl border border-slate-700 hover:border-[#0A66C2] transition-all duration-300 shadow-sm">
+                    <span class="w-8 h-8 rounded-lg bg-[#0A66C2] group-hover:bg-white group-hover:text-[#0A66C2] flex items-center justify-center font-black text-base transition-colors">in</span>
+                    <div class="text-right">
+                        <div class="text-[11px] text-slate-400 group-hover:text-blue-100">صفحه لینکدین</div>
+                        <div class="font-bold text-xs sm:text-sm dir-ltr">linkedin.com/in/mehdi-moein</div>
+                    </div>
+                </a>
+            </div>
+
+            <p class="text-sm text-slate-400 mt-6">
+                تمامی حقوق مادی و معنوی این داشبورد تحلیلی متعلق به <a href="https://pmpiran.com" target="_blank" class="text-pmp-orange hover:underline font-bold">PMPiran.com</a> می‌باشد.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Metadata for the 3 PMBOK Editions
+        const versionMeta = {
+            pmbok6: {
+                id: 'pmbok6',
+                name: 'استاندارد PMBOK نسخه ۶',
+                shortName: 'PMBOK 6',
+                year: '۲۰۱۷ (2017)',
+                badge: 'رویکرد فرآیندمحور و تجویزی (Process-Based)',
+                emoji: '📘',
+                accentColor: 'from-blue-600 to-indigo-800',
+                pillBg: 'bg-blue-50 text-blue-800 border-blue-200',
+                keyStats: [
+                    { label: 'ساختار اصلی', value: '۴۹ فرآیند اجرایی', icon: '⚙️' },
+                    { label: 'حوزه‌های دانش', value: '۱۰ حوزه دانش', icon: '📚' },
+                    { label: 'گروه‌های فرآیندی', value: '۵ گروه فرآیندی', icon: '🔄' },
+                    { label: 'ابزار و تکنیک', value: 'مبتنی بر ITTO', icon: '🛠️' }
+                ],
+                summary: 'نسخه ششم نقطه اوج نگاه فرآیندمحور و سنتی مدیریت پروژه است که بر «چگونگی انجام کار» از طریق ۴۹ فرآیند مشخص، ورودی‌ها، ابزارها و خروجی‌ها (ITTO) و کنترل انحرافات نسبت به برنامه پایه تمرکز دارد.'
+            },
+            pmbok7: {
+                id: 'pmbok7',
+                name: 'استاندارد PMBOK نسخه ۷',
+                shortName: 'PMBOK 7',
+                year: '۲۰۲۱ (2021)',
+                badge: 'رویکرد اصول‌محور و خلق ارزش (Principle-Based)',
+                emoji: '📙',
+                accentColor: 'from-amber-500 to-orange-600',
+                pillBg: 'bg-amber-50 text-amber-800 border-amber-200',
+                keyStats: [
+                    { label: 'اصول راهنما', value: '۱۲ اصل مدیریت پروژه', icon: '🧭' },
+                    { label: 'دامنه‌های عملکرد', value: '۸ دامنه عملکردی', icon: '🎯' },
+                    { label: 'هدف غایی', value: 'سیستم تحویل ارزش', icon: '💎' },
+                    { label: 'انعطاف‌پذیری', value: 'طیف کامل روش‌ها', icon: '🔀' }
+                ],
+                summary: 'نسخه هفتم یک چرخش پارادایمی بزرگ از «فرآیندها» به سمت «اصول و دستاوردها» ایجاد کرد. تمرکز اصلی از تحویل صرف خروجی‌ها به سیستم تحویل ارزش و چابکی سازمانی تغییر یافت.'
+            },
+            pmbok8: {
+                id: 'pmbok8',
+                name: 'استاندارد PMBOK نسخه ۸',
+                shortName: 'PMBOK 8',
+                year: 'نسخه نوین (New Generation)',
+                badge: 'رویکرد یکپارچه، هوشمند و عمل‌گرا',
+                emoji: '🚀',
+                accentColor: 'from-pmp-orange to-red-600',
+                pillBg: 'bg-orange-50 text-pmp-orange border-orange-200',
+                keyStats: [
+                    { label: 'معماری استاندارد', value: 'همگرایی فرآیند و اصول', icon: '🏛️' },
+                    { label: 'فناوری و داده', value: 'یکپارچگی AI و تحلیل داده', icon: '🤖' },
+                    { label: 'حاکمیت و ارزش', value: 'ارزش پایدار و ESG', icon: '🌱' },
+                    { label: 'کاربردپذیری', value: 'راهنمای عملیاتی', icon: '⚡' }
+                ],
+                summary: 'نسخه هشتم با هدف رفع خلاء عملیاتی نسخه ۷ و پرهیز از خشکی نسخه ۶، یک «سنتز هوشمند و یکپارچه» ارائه می‌دهد؛ به طوری که گروه‌های فرآیندی و راهنماهای کاربردی را با دامنه‌های عملکرد، خلق ارزش، هوش مصنوعی و پایداری ترکیب می‌کند.'
+            }
+        };
+
+        // Analytical Comparison Dataset
+        const defaultAnalyticalData = [
+            {
+                id: 'structure-philosophy',
+                title: 'ساختار کلی و فلسفه استاندارد',
+                category: 'معماری استاندارد',
+                emoji: '🏛️',
+                pmbok6: {
+                    headline: 'فرآیندمحور و تجویزی (۴۹ فرآیند و ۱۰ حوزه دانش)',
+                    details: 'ساختار ماتریسی متشکل از ۵ گروه فرآیندی (آغازین، برنامه‌ریزی، اجرایی، نظارت و کنترل، اختتام) و ۱۰ حوزه دانش با تمرکز سنگین بر ورودی‌ها، ابزارها و تکنیک‌ها و خروجی‌ها (ITTO).'
+                },
+                pmbok7: {
+                    headline: 'اصول‌محور و مبتنی بر دامنه‌های عملکرد (۱۲ اصل و ۸ دامنه)',
+                    details: 'حذف کامل جدول ۴۹ فرآیند و ITTOها؛ جایگزینی با ۱۲ اصل راهنمای رفتاری و ۸ دامنه عملکردی هم‌پوشان که بر نتایج به جای خروجی‌های فیزیکی تمرکز دارند.'
+                },
+                pmbok8: {
+                    headline: 'مدل هیبریدی و یکپارچه (بازگشت هوشمند فرآیندها در کنار اصول)',
+                    details: 'ایجاد پل ارتباطی میان «چه چیزی (اصول و ارزش نسخه ۷)» و «چگونه انجام دادن (گروه‌های فرآیندی نسخه ۶)»؛ بازآرایی ساختار برای کاربردپذیری عملیاتی بالاتر در دنیای واقعی.'
+                },
+                evolutionSummary: 'چرخش از یک راهنمای کاملاً مکانیکی و فرآیندمحور در نسخه ۶، به یک مانیفست مفهومی و انتزاعی در نسخه ۷، و نهایتاً رسیدن به بلوغ «تعادل و همگرایی میان اصول، دامنه‌ها و فرآیندهای کاربردی» در نسخه ۸.'
+            },
+            {
+                id: 'project-success',
+                title: 'معیار موفقیت پروژه',
+                category: 'ارزش و عملکرد',
+                emoji: '🎯',
+                pmbok6: {
+                    headline: 'مثلث آهنین (محدوده، زمان، هزینه و کیفیت)',
+                    details: 'موفقیت پروژه عمدتاً با تحویل خروجی‌های تعریف‌شده در چارچوب برنامه پایه زمان‌بندی، بودجه مصوب و نیازمندی‌های محدوده سنجیده می‌شود.'
+                },
+                pmbok7: {
+                    headline: 'تحقق پیامدها (Outcomes) و خلق ارزش برای ذینفعان',
+                    details: 'فراتر رفتن از محدودیت‌های سه‌گانه؛ پروژه زمانی موفق است که خروجی‌های آن منجر به ایجاد منافع ملموس، رضایت ذینفعان و تحقق اهداف کسب‌وکار در سیستم تحویل ارزش شود.'
+                },
+                pmbok8: {
+                    headline: 'ارزش پایدار، تاثیر استراتژیک و سازگاری مستمر',
+                    details: 'موفقیت پروژه به صورت چندبعدی تعریف می‌شود: تحویل ارزش خالص قابل اندازه‌گیری، پایداری زیست‌محیطی و اجتماعی (ESG)، انعطاف‌پذیری در برابر تکانه‌های بازار و همسویی بلندمدت با استراتژی سازمان.'
+                },
+                evolutionSummary: 'تکامل شاخص موفقیت از «آیا پروژه را طبق برنامه تحویل دادیم؟» (نسخه ۶) به «آیا خروجی‌ها ارزش ایجاد کردند؟» (نسخه ۷) و در نهایت «آیا این ارزش پایدار، استراتژیک و منطبق بر آینده کسب‌وکار است؟» (نسخه ۸).'
+            },
+            {
+                id: 'value-concept',
+                title: 'مفهوم و رویکرد ارزش (Value)',
+                category: 'ارزش و عملکرد',
+                emoji: '💎',
+                pmbok6: {
+                    headline: 'ارزش مستتر در Business Case و مدیریت منافع پیش از پروژه',
+                    details: 'مفهوم ارزش بیشتر در مرحله پیش از آغاز پروژه (توجیه اقتصادی) و منشور پروژه مطرح است و در طول اجرا، تمرکز بر تولید Deliverables طبق مشخصات فنی است.'
+                },
+                pmbok7: {
+                    headline: 'سیستم تحویل ارزش به عنوان قلب استاندارد',
+                    details: 'پروژه‌ها به عنوان جزئی از یک سیستم بزرگتر (شامل پورتفولیو، طرح‌ها و عملیات) دیده می‌شوند که جریان مستمر ارزش را برای سازمان و مشتریان خلق می‌کنند.'
+                },
+                pmbok8: {
+                    headline: 'مهندسی ارزش مستمر، سنجش‌پذیر و مبتنی بر داده',
+                    details: 'ارزش از حالت شعاری خارج شده و با شاخص‌های کمی و کیفی در تمام طول چرخه حیات پروژه رصد، پایش و بهینه‌سازی می‌شود؛ تمرکز ویژه بر تحقق ارزش حین و پس از پروژه.'
+                },
+                evolutionSummary: 'ارزش از یک «سند توجیهی اولیه» در نسخه ۶، به «فلسفه وجودی پروژه» در نسخه ۷ تبدیل شد و در نسخه ۸ دارای «مکانیزم‌های اجرایی، پایش کمی و پیوند مستقیم با تصمیم‌گیری‌های روزمره» گردید.'
+            },
+            {
+                id: 'pm-role',
+                title: 'نقش مدیر پروژه (Role of PM)',
+                category: 'رهبری و تیم',
+                emoji: '👨‍💼',
+                pmbok6: {
+                    headline: 'مدیر، برنامه‌ریز، هماهنگ‌کننده و کنترل‌کننده مرکزی',
+                    details: 'مدیر پروژه در راس هرم هدایت پروژه قرار دارد؛ وظیفه او تدوین برنامه جامع مدیریت پروژه، تخصیص وظایف، نظارت بر اجرای فرآیندها و کنترل تغییرات است (مثلث استعداد PMI).'
+                },
+                pmbok7: {
+                    headline: 'رهبر خدمتگزار (Servant Leader) و تسهیل‌گر تیم',
+                    details: 'تغییر نقش از فرماندهی به تسهیل‌گری؛ رهبری به صورت توزیع‌شده در تیم پروژه جریان دارد و مدیر پروژه بر توانمندسازی تیم، رفع موانع و ایجاد محیط امن روانی تمرکز می‌کند.'
+                },
+                pmbok8: {
+                    headline: 'معمار استراتژیک ارزش و رهبر مسلط بر هوش مصنوعی و داده',
+                    details: 'ترکیب مهارت‌های رهبری انسانی (هوش هیجانی و مذاکره) با سواد دیجیتال و هوش مصنوعی؛ مدیر پروژه به عنوان یک شریک استراتژیک کسب‌وکار عمل می‌کند که تصمیمات را با کمک تحلیل داده هدایت می‌نماید.'
+                },
+                evolutionSummary: 'نقش مدیر پروژه از «ناظر اجرای فرآیندها» (نسخه ۶) به «تسهیل‌گر و مربی تیم» (نسخه ۷) و سپس به «رهبر استراتژیک، تحلیل‌گر داده و هدایت‌گر تحول در عصر هوش مصنوعی» (نسخه ۸) ارتقا یافته است.'
+            },
+            {
+                id: 'pmo-status',
+                title: 'وضعیت و جایگاه PMO (دفتر مدیریت پروژه)',
+                category: 'حاکمیت سازمانی',
+                emoji: '🏢',
+                pmbok6: {
+                    headline: 'سه مدل کلاسیک: حمایتی، کنترلی و دستوری',
+                    details: 'تمرکز PMO بر استانداردسازی قالب‌ها، متدولوژی‌ها، ممیزی رعایت فرآیندها و گزارش‌دهی وضعیت پروژه‌ها (Supportive, Controlling, Directive).'
+                },
+                pmbok7: {
+                    headline: 'تغییر به سمت VMO (دفتر مدیریت ارزش) و چابکی سازمانی',
+                    details: 'فاصله گرفتن از بروکراسی اداری؛ PMO به عنوان یک واحد توانمندساز، مربی چابکی و تسهیل‌کننده جریان ارزش (Value Management Office) ایفای نقش می‌کند.'
+                },
+                pmbok8: {
+                    headline: 'قطب هوشمند استراتژی، داده و تحول (AI-Driven PMO)',
+                    details: 'PMO به مرکز هوشمندی کسب‌وکار تبدیل می‌شود که با بهره‌گیری از داشبوردهای پیش‌بینانه، چابکی استراتژیک و همسویی سبد پروژه‌ها با اهداف کلان را راهبری می‌کند.'
+                },
+                evolutionSummary: 'سیر تحول PMO نشان‌دهنده گذار از «پلیس فرآیند و مستندات» در نسخه ۶، به «تسهیل‌گر فرهنگ چابک و ارزش» در نسخه ۷ و نهایتاً «مغز متفکر استراتژیک و مرکز هوش مصنوعی پروژه در سازمان» در نسخه ۸ است.'
+            },
+            {
+                id: 'change-management',
+                title: 'رویکرد مدیریت تغییرات',
+                category: 'اجرا و انطباق',
+                emoji: '🔄',
+                pmbok6: {
+                    headline: 'کنترل یکپارچه تغییرات (CCB) و حفظ خطوط پایه',
+                    details: 'تغییر به عنوان انحرافی که باید به دقت کنترل شود نگریسته می‌شود؛ هرگونه تغییر نیازمند درخواست رسمی، بررسی آثار و تصویب در کمیته کنترل تغییرات (CCB) است.'
+                },
+                pmbok7: {
+                    headline: 'پذیرش تغییر و انطباق‌پذیری (Adaptability & Resiliency)',
+                    details: 'تغییر به عنوان یک واقعیت اجتناب‌ناپذیر و فرصت‌آفرین در محیط‌های پیچیده پذیرفته می‌شود؛ تاکید بر تاب‌آوری، چرخه‌های بازخورد کوتاه و مدیریت تغییر سازمانی.'
+                },
+                pmbok8: {
+                    headline: 'چابکی تطبیقی همراه با حاکمیت هوشمند تغییر',
+                    details: 'ایجاد توازن میان انعطاف‌پذیری سریع (در محیط‌های چابک) و انضباط کنترلی (در پروژه‌های زیرساختی و کلان) با تکیه بر شبیه‌سازی سناریوها و تحلیل تاثیر لحظه‌ای تغییرات.'
+                },
+                evolutionSummary: 'از «مقاومت و کنترل سخت‌گیرانه تغییرات» در نسخه ۶، به «آغوش باز و استقبال کامل از تغییر» در نسخه ۷، و رسیدن به «مدیریت هوشمند، متوازن و موقعیت‌محور تغییرات» در نسخه ۸.'
+            },
+            {
+                id: 'tailoring-lifecycle',
+                title: 'رویکرد چرخه حیات و سفارشی‌سازی (Tailoring)',
+                category: 'اجرا و انطباق',
+                emoji: '🛠️',
+                pmbok6: {
+                    headline: 'غالب بودن رویکرد آبشاری (Predictive) + پیوست چابک',
+                    details: 'بدنه اصلی استاندارد بر چرخه حیات پیش‌بینی‌گرا استوار است و ملاحظات چابک در قالب ضمیمه و راهنمای مکمل (Agile Practice Guide) به آن اضافه شده‌اند.'
+                },
+                pmbok7: {
+                    headline: 'فراگیر و مستقل از متدولوژی + فرآیند ۴ مرحله‌ای Tailoring',
+                    details: 'عدم وابستگی به هیچ متدولوژی خاص؛ ارائه یک بخش مستقل برای سفارشی‌سازی در ۴ گام مشخص بر اساس بافتار پروژه، سازمان و پیچیدگی.'
+                },
+                pmbok8: {
+                    headline: 'سفارشی‌سازی پویا و الگوهای عملیاتی متناسب با صنعت',
+                    details: 'ارائه نقشه راه‌های ملموس‌تر برای ترکیب روش‌های Predictive، Agile و Hybrid به همراه راهنماهای کاربردی برای صنایع مختلف (ساخت و ساز، فناوری، انرژی و خدمات).'
+                },
+                evolutionSummary: 'تکامل از «استاندارد آبشاری با وصله چابک» (نسخه ۶) به «چتر مفهومی کاملاً خنثی نسبت به روش اجرا» (نسخه ۷) و سپس «چارچوب اقتضایی با دستورالعمل‌های روشن برای ترکیب روش‌ها» (نسخه ۸).'
+            },
+            {
+                id: 'risk-uncertainty',
+                title: 'مدیریت ریسک و عدم قطعیت',
+                category: 'پایداری و ریسک',
+                emoji: '⚡',
+                pmbok6: {
+                    headline: 'مدیریت ریسک‌های قابل شناسایی (رویدادمحور)',
+                    details: 'تمرکز بر شناسایی، تحلیل کیفی و کمی، و برنامه‌ریزی پاسخ به ریسک‌های مشخص (تهدیدها و فرصت‌ها) در قالب ثبت ریسک (Risk Register).'
+                },
+                pmbok7: {
+                    headline: 'دامنه عملکرد عدم قطعیت، ابهام و پیچیدگی (VUCA)',
+                    details: 'گسترش دیدگاه از ریسک‌های منفرد به درک کلان «عدم قطعیت، ابهام، پیچیدگی و نوسان» در محیط درونی و بیرونی پروژه.'
+                },
+                pmbok8: {
+                    headline: 'پیش‌بینی‌گری هوشمند ریسک و تاب‌آوری سیستمی (BANI / AI)',
+                    details: 'استفاده از مدل‌های تحلیل پیش‌بینانه و هوش مصنوعی برای شناسایی زودهنگام ریسک‌های نوظهور، سایبری و زنجیره تامین، همراه با ادغام دوباره فرآیندهای عملیاتی ریسک با دامنه عدم قطعیت.'
+                },
+                evolutionSummary: 'گذار از «مدیریت فهرست ریسک‌های احتمالی» در نسخه ۶، به «زیستن و تصمیم‌گیری در فضای ابهام و پیچیدگی» در نسخه ۷، و ارتقا به «سیستم هشدار سریع و تاب‌آوری هوشمند مبتنی بر داده» در نسخه ۸.'
+            },
+            {
+                id: 'tech-ai-data',
+                title: 'جایگاه فناوری، داده و هوش مصنوعی (AI)',
+                category: 'فناوری و آینده‌پژوهی',
+                emoji: '🤖',
+                pmbok6: {
+                    headline: 'سیستم اطلاعات مدیریت پروژه (PMIS) به عنوان ابزار سنتی',
+                    details: 'فناوری عمدتاً در قالب نرم‌افزارهای زمان‌بندی، مخازن اسناد و سیستم‌های گزارش‌دهی (PMIS) به عنوان یکی از ابزارها و تکنیک‌ها دیده می‌شود.'
+                },
+                pmbok7: {
+                    headline: 'گردآوری داده و مدل‌های ارتباطی دیجیتال در دامنه‌ها',
+                    details: 'اشاره به اهمیت داده‌ها، داشبوردهای بصری و ابزارهای همکاری تیم‌های مجازی در دامنه اندازه‌گیری و کار تیمی، اما بدون پرداختن عمیق به انقلاب هوش مصنوعی مولد.'
+                },
+                pmbok8: {
+                    headline: 'ادغام بومی هوش مصنوعی (GenAI)، اتوماسیون و تصمیم‌گیری داده‌محور',
+                    details: 'شناسایی هوش مصنوعی به عنوان همکار مدیر پروژه؛ خودکارسازی گزارش‌دهی، تخمین‌های هوشمند زمان و هزینه، تحلیل احساسات ذینفعان و رعایت اخلاق داده و هوش مصنوعی.'
+                },
+                evolutionSummary: 'تغییر نقش فناوری از «یک ماشین‌حساب و بایگانی دیجیتال (PMIS)» در نسخه ۶، به «پلتفرم تعامل و سنجش» در نسخه ۷، و تبدیل شدن به «دستیار هوشمند و موتور پیشران تصمیم‌گیری (AI)» در نسخه ۸.'
+            }
+        ];
+
+        // Application State
+        let analyticalData = JSON.parse(JSON.stringify(defaultAnalyticalData));
+        let currentScreen = 'home'; // 'home' | 'version' | 'topic' | 'matrix'
+        let currentVersionTab = 'pmbok8';
+        let currentTopicId = analyticalData[0].id;
+        let topicSubLayout = 'tabs';
+        let searchQuery = '';
+
+        // Initialization
+        window.onload = function () {
+            updateScreenVisibility();
+            renderAllViews();
+        };
+
+        // Navigation
+        function enterPerspective(mode) {
+            currentScreen = mode;
+            updateScreenVisibility();
+            renderAllViews();
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            currentScreen = 'home';
+            updateScreenVisibility();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateScreenVisibility() {
+            document.getElementById('homeScreen').classList.toggle('hidden', currentScreen !== 'home');
+            document.getElementById('viewVersionContainer').classList.toggle('hidden', currentScreen !== 'version');
+            document.getElementById('viewTopicContainer').classList.toggle('hidden', currentScreen !== 'topic');
+            document.getElementById('viewMatrixContainer').classList.toggle('hidden', currentScreen !== 'matrix');
+        }
+
+        // Filtering
+        function getFilteredData() {
+            if (!searchQuery.trim()) return analyticalData;
+            const q = searchQuery.trim().toLowerCase();
+            return analyticalData.filter(item => {
+                return (
+                    item.title.toLowerCase().includes(q) ||
+                    item.category.toLowerCase().includes(q) ||
+                    item.pmbok6.headline.toLowerCase().includes(q) ||
+                    item.pmbok6.details.toLowerCase().includes(q) ||
+                    item.pmbok7.headline.toLowerCase().includes(q) ||
+                    item.pmbok7.details.toLowerCase().includes(q) ||
+                    item.pmbok8.headline.toLowerCase().includes(q) ||
+                    item.pmbok8.details.toLowerCase().includes(q) ||
+                    item.evolutionSummary.toLowerCase().includes(q)
+                );
+            });
+        }
+
+        function handleSearch(val) {
+            searchQuery = val;
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const banner = document.getElementById('searchStatusBanner');
+            const statusText = document.getElementById('searchStatusText');
+
+            if (searchQuery.trim() !== '') {
+                clearBtn.classList.remove('hidden');
+                banner.classList.remove('hidden');
+                const filtered = getFilteredData();
+                statusText.textContent = `عبارت «${searchQuery}» در ${filtered.length} شاخص تحلیلی یافت شد.`;
+                if (filtered.length > 0 && !filtered.some(i => i.id === currentTopicId)) {
+                    currentTopicId = filtered[0].id;
+                }
+                // Auto-navigate to version view if on home
+                if (currentScreen === 'home' && filtered.length > 0) {
+                    currentScreen = 'version';
+                    updateScreenVisibility();
+                }
+            } else {
+                clearBtn.classList.add('hidden');
+                banner.classList.add('hidden');
+            }
+            renderAllViews();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            handleSearch('');
+        }
+
+        function renderAllViews() {
+            renderVersionPerspective();
+            renderTopicPerspective();
+            renderMatrixPerspective();
+        }
+
+        function selectVersionTab(verKey) {
+            currentVersionTab = verKey;
+            renderVersionPerspective();
+        }
+
+        // Version Perspective
+        function renderVersionPerspective() {
+            ['pmbok6', 'pmbok7', 'pmbok8'].forEach(vKey => {
+                const btn = document.getElementById('verTab-' + vKey);
+                if (!btn) return;
+                if (vKey === currentVersionTab) {
+                    btn.className = 'ver-tab-btn flex items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-xl font-extrabold text-base sm:text-lg transition-all bg-pmp-navy text-white border-2 border-pmp-orange shadow-md scale-[1.02]';
+                } else {
+                    btn.className = 'ver-tab-btn flex items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-xl font-bold text-base sm:text-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200';
+                }
+            });
+
+            const meta = versionMeta[currentVersionTab];
+            const heroEl = document.getElementById('versionHeroSummary');
+            heroEl.innerHTML = `
+                <div class="bg-gradient-to-l ${meta.accentColor} rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden animate-fade-up">
+                    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
+                        <div class="space-y-2 max-w-2xl">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/25 backdrop-blur-sm text-sm font-bold border border-white/20">
+                                <span>${meta.emoji}</span>
+                                <span>سال انتشار: ${meta.year}</span>
+                                <span>•</span>
+                                <span>${meta.badge}</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-black">${meta.name}</h2>
+                            <p class="text-base sm:text-lg text-white/90 leading-relaxed">${meta.summary}</p>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3 w-full lg:w-auto shrink-0">
+                            ${meta.keyStats.map(st => `
+                                <div class="bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl p-3.5 text-right">
+                                    <div class="text-lg mb-0.5">${st.icon}</div>
+                                    <div class="text-[11px] text-white/80">${st.label}</div>
+                                    <div class="text-sm font-extrabold text-white mt-0.5">${st.value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const filtered = getFilteredData();
+            const gridEl = document.getElementById('versionCardsGrid');
+
+            if (filtered.length === 0) {
+                gridEl.innerHTML = `
+                    <div class="col-span-full bg-white rounded-2xl p-10 text-center border border-slate-200">
+                        <div class="text-5xl mb-3">🔍</div>
+                        <h3 class="font-bold text-pmp-navy text-lg">موردی مطابق با جستجوی شما یافت نشد</h3>
+                        <p class="text-sm text-slate-500 mt-1">لطفاً عبارت دیگری را جستجو کنید یا فیلتر را پاک نمایید.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            gridEl.innerHTML = filtered.map((item, idx) => {
+                const verData = item[currentVersionTab];
+                return `
+                    <div class="card-interactive bg-white rounded-2xl p-6 shadow-corp border border-slate-200/90 flex flex-col justify-between animate-fade-up" style="animation-delay: ${idx * 60}ms">
+                        <div>
+                            <div class="flex items-start justify-between gap-3 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-14 h-14 rounded-2xl bg-pmp-orangePale border border-pmp-orange/25 flex items-center justify-center text-3xl shrink-0">
+                                        ${item.emoji}
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-pmp-orange bg-pmp-orangePale px-2.5 py-0.5 rounded-full">
+                                            ${item.category}
+                                        </span>
+                                        <h3 class="font-extrabold text-pmp-navy text-lg sm:text-xl mt-1">${item.title}</h3>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-black px-2.5 py-1 rounded-lg ${meta.pillBg} border shrink-0">
+                                    ${meta.shortName}
+                                </span>
+                            </div>
+
+                            <div class="bg-slate-50 border-r-4 border-pmp-orange rounded-xl p-3.5 mb-4">
+                                <div class="text-sm sm:text-base font-extrabold text-pmp-navy leading-snug">
+                                    ${verData.headline}
+                                </div>
+                            </div>
+
+                            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-5">
+                                ${verData.details}
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-2 flex-wrap">
+                            <button
+                                onclick="jumpToTopicEvolution('${item.id}')"
+                                class="text-sm font-bold text-pmp-orange hover:text-white hover:bg-pmp-orange px-3.5 py-2 rounded-lg border border-pmp-orange/40 transition flex items-center gap-1.5 mr-auto">
+                                <span>سیر تحول ۶ تا ۸</span>
+                                <span>⬅</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function jumpToTopicEvolution(topicId) {
+            currentTopicId = topicId;
+            topicSubLayout = 'tabs';
+            currentScreen = 'topic';
+            updateScreenVisibility();
+            renderAllViews();
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+        }
+
+        // Topic Perspective
+        function setTopicSubLayout(layout) {
+            topicSubLayout = layout;
+            const tabsBtn = document.getElementById('topicLayoutTabsBtn');
+            const accBtn = document.getElementById('topicLayoutAccordionBtn');
+
+            if (layout === 'tabs') {
+                tabsBtn.className = 'px-4 py-2.5 rounded-lg text-sm font-bold transition bg-pmp-navy text-white shadow-sm';
+                accBtn.className = 'px-4 py-2.5 rounded-lg text-sm font-bold transition text-slate-600 hover:text-pmp-navy';
+            } else {
+                accBtn.className = 'px-4 py-2.5 rounded-lg text-sm font-bold transition bg-pmp-navy text-white shadow-sm';
+                tabsBtn.className = 'px-4 py-2.5 rounded-lg text-sm font-bold transition text-slate-600 hover:text-pmp-navy';
+            }
+
+            document.getElementById('topicPillsWrapper').classList.toggle('hidden', layout !== 'tabs');
+            document.getElementById('activeTopicDetailContainer').classList.toggle('hidden', layout !== 'tabs');
+            document.getElementById('topicAccordionContainer').classList.toggle('hidden', layout !== 'accordion');
+
+            renderTopicPerspective();
+        }
+
+        function selectTopicPill(id) {
+            currentTopicId = id;
+            renderTopicPerspective();
+        }
+
+        function renderTopicPerspective() {
+            const filtered = getFilteredData();
+            document.getElementById('topicCounterBadge').textContent = `${filtered.length} شاخص تحلیلی`;
+
+            if (filtered.length === 0) {
+                document.getElementById('topicPillsContainer').innerHTML = '';
+                document.getElementById('activeTopicDetailContainer').innerHTML = `
+                    <div class="bg-white rounded-2xl p-10 text-center border border-slate-200">
+                        <div class="text-5xl mb-3">🔍</div>
+                        <h3 class="font-bold text-pmp-navy text-lg">موضوعی مطابق با جستجوی شما یافت نشد</h3>
+                    </div>
+                `;
+                document.getElementById('topicAccordionContainer').innerHTML = '';
+                return;
+            }
+
+            let activeTopic = filtered.find(t => t.id === currentTopicId) || filtered[0];
+            currentTopicId = activeTopic.id;
+
+            const pillsEl = document.getElementById('topicPillsContainer');
+            pillsEl.innerHTML = filtered.map(item => {
+                const isSelected = item.id === currentTopicId;
+                return `
+                    <button
+                        onclick="selectTopicPill('${item.id}')"
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm sm:text-base font-bold transition-all ${
+                            isSelected
+                            ? 'bg-pmp-orange text-white shadow-orange-glow scale-[1.03]'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80'
+                        }">
+                        <span class="text-lg">${item.emoji}</span>
+                        <span>${item.title}</span>
+                    </button>
+                `;
+            }).join('');
+
+            const detailEl = document.getElementById('activeTopicDetailContainer');
+            detailEl.innerHTML = buildTopicEvolutionHTML(activeTopic, true);
+
+            const accEl = document.getElementById('topicAccordionContainer');
+            accEl.innerHTML = filtered.map((item, index) => `
+                <div class="bg-white rounded-2xl shadow-corp border border-slate-200/90 overflow-hidden">
+                    <button
+                        onclick="toggleAccordionItem('acc-body-${item.id}', 'acc-icon-${item.id}')"
+                        class="w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-50 transition">
+                        <div class="flex items-center gap-3.5">
+                            <span class="w-12 h-12 rounded-xl bg-pmp-orangePale text-pmp-orange flex items-center justify-center text-2xl shrink-0">
+                                ${item.emoji}
+                            </span>
+                            <div>
+                                <span class="text-xs font-bold text-pmp-orange">${item.category}</span>
+                                <h3 class="font-extrabold text-pmp-navy text-lg">${item.title}</h3>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="hidden sm:inline-block text-sm text-slate-500 font-medium">مشاهده سیر تحول</span>
+                            <span id="acc-icon-${item.id}" class="w-9 h-9 rounded-full bg-slate-100 text-pmp-navy flex items-center justify-center font-bold transition-transform ${index === 0 ? 'rotate-180 bg-pmp-orange text-white' : ''}">
+                                ▼
+                            </span>
+                        </div>
+                    </button>
+                    <div id="acc-body-${item.id}" class="${index === 0 ? '' : 'hidden'} p-5 pt-0 border-t border-slate-100 bg-slate-50/50">
+                        ${buildTopicEvolutionHTML(item, false)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleAccordionItem(bodyId, iconId) {
+            const body = document.getElementById(bodyId);
+            const icon = document.getElementById(iconId);
+            const isHidden = body.classList.contains('hidden');
+            body.classList.toggle('hidden', !isHidden);
+            if (isHidden) {
+                icon.classList.add('rotate-180', 'bg-pmp-orange', 'text-white');
+                icon.classList.remove('bg-slate-100', 'text-pmp-navy');
+            } else {
+                icon.classList.remove('rotate-180', 'bg-pmp-orange', 'text-white');
+                icon.classList.add('bg-slate-100', 'text-pmp-navy');
+            }
+        }
+
+        function buildTopicEvolutionHTML(topic, includeHeader) {
+            return `
+                <div class="bg-white rounded-3xl ${includeHeader ? 'p-6 sm:p-8 shadow-corp border border-slate-200/90' : 'p-4'} animate-fade-up space-y-6">
+                    ${includeHeader ? `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-16 h-16 rounded-2xl bg-pmp-navy text-pmp-orange flex items-center justify-center text-3xl shadow-md">
+                                    ${topic.emoji}
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold text-pmp-orange bg-pmp-orangePale px-3 py-0.5 rounded-full">
+                                        دسته‌بندی: ${topic.category}
+                                    </span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-pmp-navy mt-1">${topic.title}</h3>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm font-bold text-slate-500 bg-slate-100 px-3.5 py-2 rounded-xl">
+                                <span>📘 ۶</span>
+                                <span class="text-pmp-orange">⬅</span>
+                                <span>📙 ۷</span>
+                                <span class="text-pmp-orange">⬅</span>
+                                <span class="text-pmp-navy font-black">🚀 ۸</span>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
+                        <div class="evolution-step relative bg-slate-50 rounded-2xl p-5 border-2 border-slate-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="inline-flex items-center gap-1.5 text-sm font-extrabold px-3 py-1 rounded-lg bg-blue-100 text-blue-900">
+                                        📘 PMBOK 6 (۲۰۱۷)
+                                    </span>
+                                    <span class="text-xs text-slate-400 font-bold">فرآیندمحور</span>
+                                </div>
+                                <h4 class="font-extrabold text-pmp-navy text-base sm:text-lg mb-3 bg-white p-3 rounded-xl border border-slate-200/80 leading-snug">
+                                    ${topic.pmbok6.headline}
+                                </h4>
+                                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                                    ${topic.pmbok6.details}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="evolution-step relative bg-amber-50/40 rounded-2xl p-5 border-2 border-amber-200 hover:border-amber-400 transition-all duration-300 hover:shadow-lg">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="inline-flex items-center gap-1.5 text-sm font-extrabold px-3 py-1 rounded-lg bg-amber-100 text-amber-900">
+                                        📙 PMBOK 7 (۲۰۲۱)
+                                    </span>
+                                    <span class="text-xs text-amber-700 font-bold">اصول و ارزش</span>
+                                </div>
+                                <h4 class="font-extrabold text-pmp-navy text-base sm:text-lg mb-3 bg-white p-3 rounded-xl border border-amber-200/80 leading-snug">
+                                    ${topic.pmbok7.headline}
+                                </h4>
+                                <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+                                    ${topic.pmbok7.details}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="evolution-step relative bg-gradient-to-b from-orange-50/80 to-white rounded-2xl p-5 border-2 border-pmp-orange shadow-md hover:shadow-xl transition-all duration-300">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="inline-flex items-center gap-1.5 text-sm font-extrabold px-3 py-1 rounded-lg bg-pmp-orange text-white shadow-sm">
+                                        🚀 PMBOK 8
+                                    </span>
+                                    <span class="text-xs text-pmp-orange font-extrabold">بلوغ یکپارچه</span>
+                                </div>
+                                <h4 class="font-extrabold text-pmp-navy text-base sm:text-lg mb-3 bg-white p-3 rounded-xl border border-pmp-orange/30 shadow-sm leading-snug">
+                                    ${topic.pmbok8.headline}
+                                </h4>
+                                <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+                                    ${topic.pmbok8.details}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-l from-pmp-navy via-slate-900 to-pmp-navyLight text-white rounded-2xl p-5 sm:p-6 border-r-8 border-pmp-orange shadow-lg">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-pmp-orange/20 border border-pmp-orange/40 flex items-center justify-center text-3xl shrink-0">
+                                💡
+                            </div>
+                            <div class="space-y-1.5">
+                                <span class="text-xs font-black uppercase tracking-wider text-pmp-orange">خلاصه تحلیلی سیر تحول</span>
+                                <p class="text-base sm:text-lg text-slate-100 font-medium leading-relaxed">
+                                    ${topic.evolutionSummary}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Matrix Perspective
+        function renderMatrixPerspective() {
+            const filtered = getFilteredData();
+            const tbody = document.getElementById('matrixTableBody');
+
+            tbody.innerHTML = filtered.map(item => `
+                <tr class="hover:bg-orange-50/40 transition align-top">
+                    <td class="p-4 font-extrabold text-pmp-navy border-l border-slate-200 bg-slate-50/70">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">${item.emoji}</span>
+                            <div>
+                                <div class="text-xs text-pmp-orange font-bold">${item.category}</div>
+                                <div class="text-base">${item.title}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 border-l border-slate-200">
+                        <div class="font-bold text-pmp-navy mb-1 text-base">${item.pmbok6.headline}</div>
+                        <div class="text-slate-600 text-sm leading-relaxed">${item.pmbok6.details}</div>
+                    </td>
+                    <td class="p-4 border-l border-slate-200">
+                        <div class="font-bold text-pmp-navy mb-1 text-base">${item.pmbok7.headline}</div>
+                        <div class="text-slate-600 text-sm leading-relaxed">${item.pmbok7.details}</div>
+                    </td>
+                    <td class="p-4 border-l border-slate-200 bg-orange-50/20">
+                        <div class="font-bold text-pmp-orange mb-1 text-base">${item.pmbok8.headline}</div>
+                        <div class="text-slate-700 text-sm leading-relaxed">${item.pmbok8.details}</div>
+                    </td>
+                    <td class="p-4 bg-amber-50/30 text-pmp-navy font-medium text-sm leading-relaxed">
+                        ${item.evolutionSummary}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const headers = ['شاخص مقایسه', 'دسته بندی', 'PMBOK 6', 'PMBOK 7', 'PMBOK 8', 'خلاصه تحلیلی سیر تحول'];
+            const rows = analyticalData.map(item => [
+                `"${item.title.replace(/"/g, '""')}"`,
+                `"${item.category.replace(/"/g, '""')}"`,
+                `"${(item.pmbok6.headline + ' - ' + item.pmbok6.details).replace(/"/g, '""')}"`,
+                `"${(item.pmbok7.headline + ' - ' + item.pmbok7.details).replace(/"/g, '""')}"`,
+                `"${(item.pmbok8.headline + ' - ' + item.pmbok8.details).replace(/"/g, '""')}"`,
+                `"${item.evolutionSummary.replace(/"/g, '""')}"`
+            ]);
+
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PMBOK_6_7_8_Evolution_PMPiran.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
